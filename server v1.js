@@ -14,10 +14,9 @@ app.post("/download", async (req, res) => {
     return res.status(400).send("Invalid URL");
   }
 
-  res.header("Content-Disposition", 'attachment; filename="audio.mp3"');
+  res.header("Content-Disposition", 'attachment; filename="video.mp4"');
   ytdl(videoUrl, {
-    filter: "audioonly",
-    quality: "highestaudio",
+    format: "mp4",
   }).pipe(res);
 });
 
