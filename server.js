@@ -7,7 +7,7 @@ const port = process.env.PORT || 3001;
 app.use(express.json());
 app.use(cors());
 
-app.post("/download", async (req, res) => {
+app.post("/download/mp3", async (req, res) => {
   const videoUrl = req.body.url;
 
   if (!ytdl.validateURL(videoUrl)) {
@@ -18,6 +18,19 @@ app.post("/download", async (req, res) => {
   ytdl(videoUrl, {
     filter: "audioonly",
     quality: "highestaudio",
+  }).pipe(res);
+});
+
+app.post("/download/mp4", async (req, res) => {
+  const videoUrl = req.body.url;
+
+  if (!ytdl.validateURL(videoUrl)) {
+    return res.status(400).send("Invalid URL");
+  }
+
+  res.header("Content-Disposition", 'attachment; filename="video.mp4"');
+  ytdl(videoUrl, {
+    format: "mp4",
   }).pipe(res);
 });
 
